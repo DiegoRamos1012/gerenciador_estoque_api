@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GerenciadorEstoqueApplication {
-
-	public static void main(String[] args) {
+	static void main(String[] args) {
 		SpringApplication.run(GerenciadorEstoqueApplication.class, args);
 	}
-
 }
