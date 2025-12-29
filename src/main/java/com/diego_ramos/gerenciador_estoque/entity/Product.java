@@ -52,16 +52,16 @@ public class Product {
     }
 
     @PrePersist
-    private void setDefaultStatus() {
-        if (this.status == null)
+    @PreUpdate
+    private void prePersistAndUpdate() {
+        // Define status padrão ao criar
+        if (this.status == null) {
             this.status = ProductStatus.ACTIVE;
-    }
-
-    @PrePersist // Executa antes de inserir a entidade no banco
-    @PreUpdate // Executa antes de atualizar a entidade no banco
-    private void updateLastTimeChanged() {
+        }
+        // Atualiza o timestamp sempre que persistir ou atualizar
         this.lastTimeChanged = LocalDateTime.now();
     }
+
 
     private void updateQuantity(int newQuantity) {
         if (newQuantity <= 0) {
