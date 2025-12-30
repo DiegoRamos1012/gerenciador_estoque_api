@@ -1,18 +1,22 @@
 package com.diego_ramos.gerenciador_estoque.entity;
 
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
+import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "products")
 public class Product {
@@ -48,7 +52,36 @@ public class Product {
     @Column(name = "last_time_changed")
     private LocalDateTime lastTimeChanged;
 
-    protected Product() {
+    // Construtor
+    private Product(
+            String name,
+            BigDecimal price,
+            int quantity,
+            String description
+    ) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.description = description;
+    }
+
+    // Factory
+
+    public static Product create(
+            String name,
+            BigDecimal price,
+            int quantity,
+            String description
+    ) {
+        if (quantity < 0) {
+            throw new BusinessException("Quantidade não pode ser negativa");
+        }
+
+        Product product = new Product(name, price, quantity, description);
+        product.status = ProductStatus.ACTIVE;
+        product.lastTimeChanged = LocalDateTime.now();
+
+        return product;
     }
 
     @PrePersist
@@ -62,8 +95,7 @@ public class Product {
         this.lastTimeChanged = LocalDateTime.now();
     }
 
-
-    private void updateQuantity(int newQuantity) {
+    public void updateQuantity(int newQuantity) {
         if (newQuantity <= 0) {
             throw new IllegalArgumentException("Quantidade inválida");
         }
