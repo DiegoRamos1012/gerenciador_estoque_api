@@ -1,4 +1,23 @@
 package com.diego_ramos.gerenciador_estoque.repository;
 
-public interface ProductRepository {
+import com.diego_ramos.gerenciador_estoque.domain.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+/**
+ * Repository responsável pelo acesso a dados da entidade Product.
+ * <p>
+ * Métodos herdados do JpaRepository:
+ * - save
+ * - findById
+ * - findAll
+ * - deleteById
+ * - existsById
+ * - count
+ * <p>
+ * Pode conter queries customizadas quando necessário.
+ */
+
+public interface ProductRepository extends JpaRepository<Product, UUID> { // JpaRepository <T, id>, onde T = Entidade e id = tipo de chave primária
 }
