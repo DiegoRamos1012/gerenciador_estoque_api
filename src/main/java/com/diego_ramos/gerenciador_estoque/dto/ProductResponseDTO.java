@@ -10,10 +10,15 @@ import java.util.UUID;
 
 public record ProductResponseDTO(
         UUID id,
+
         String name,
+
         BigDecimal price,
-        int quantity,
+
+        Integer quantity,
+
         String description,
+
         ProductStatus status,
 
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")

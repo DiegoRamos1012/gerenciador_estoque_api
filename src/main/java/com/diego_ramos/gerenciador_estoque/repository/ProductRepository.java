@@ -19,5 +19,6 @@ import java.util.UUID;
  * Pode conter queries customizadas quando necessário.
  */
 
-public interface ProductRepository extends JpaRepository<Product, UUID> { // JpaRepository <T, id>, onde T = Entidade e id = tipo de chave primária
+public interface ProductRepository extends JpaRepository<Product, UUID> {
+    boolean existsByNameIgnoreCase(String name);
 }
