@@ -1,4 +1,4 @@
-package com.diego_ramos.gerenciador_estoque.entity;
+package com.diego_ramos.gerenciador_estoque.domain;
 
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
