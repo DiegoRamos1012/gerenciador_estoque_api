@@ -21,7 +21,7 @@ public record ProductResponseDTO(
 
         ProductStatus status,
 
-        @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         LocalDateTime lastTimeChanged
 ) {
     public static ProductResponseDTO from(Product product) {

@@ -51,19 +51,22 @@ public class ProductService {
 
     public ProductResponseDTO updateProduct(UUID id, ProductUpdateDTO dto) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Produto não encontrado"));
+            .orElseThrow(() -> new BusinessException("Produto não encontrado"));
 
         product.update(
-                dto.newName(),
-                dto.newPrice(),
-                dto.newQuantity(),
-                dto.newDescription(),
-                dto.newStatus()
-        );
+            dto.newName() != null ? dto.newName() : product.getName(),
+            dto.newPrice() != null ? dto.newPrice() : product.getPrice(),
+            dto.newQuantity() != null ? dto.newQuantity() : product.getQuantity(),
+            dto.newDescription() != null ? dto.newDescription() : product.getDescription(),
+            dto.newStatus()
+    );
 
-        return ProductResponseDTO.from(product);
-    }
+    productRepository.save(product);
+    return ProductResponseDTO.from(product);
+}
 
+
+        // return ProductResponseDTO.from(product);
     public void deleteProduct(UUID id) {
         if (!productRepository.existsById(id)) {
             throw new BusinessException("Produto não encontrado");

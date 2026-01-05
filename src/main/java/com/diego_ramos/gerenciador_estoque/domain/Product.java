@@ -29,9 +29,9 @@ public class Product {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
