@@ -7,21 +7,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
-public class User extends AuditableEntity {
-
-    @Id
-    @GeneratedValue
-    @Column(nullable = false, updatable = false)
-    private UUID id;
-
-    @Column(nullable = false, length = 250)
-    private String name;
+public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String email;
@@ -35,7 +25,9 @@ public class User extends AuditableEntity {
     @Column(nullable = false)
     private UserRole role;
 
-    /* Campos herdados de AuditableEntity:
+    /* Campos herdados de BaseEntity:
+     * - id
+     * - name
      * - createdAt
      * - lastTimeChanged
      */

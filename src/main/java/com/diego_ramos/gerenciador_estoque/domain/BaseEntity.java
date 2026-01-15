@@ -1,22 +1,32 @@
 package com.diego_ramos.gerenciador_estoque.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@MappedSuperclass
-// Define que esta classe não será uma tabela, mas seus campos serão herdados pelas entidades filhas (extends)
-public abstract class AuditableEntity {
+/**
+ * BaseEntity é a classe base para todas as entidades do sistema.
+ * Contém campos comuns como id, name e auditoria (createdAt, lastTimeChanged).
+ * Não deve conter regras de negócio específicas das entidades filhas.
+ */
 
-    protected LocalDateTime createdAt;
-    protected LocalDateTime lastTimeChanged;
+@Getter
+@MappedSuperclass
+public abstract class BaseEntity {
+
+    @Column(nullable = false, length = 250)
+    String name;
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)
     private UUID id;
-    @Column(nullable = false, length = 250)
-    private String name;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime lastTimeChanged;
 
     /**
      * Executa automaticamente antes da entidade ser salva no banco (INSERT)
@@ -28,11 +38,14 @@ public abstract class AuditableEntity {
     }
 
     /**
-     * Executa automaticamente antes da entidade exisente receber uma atualização no banco (UPDATE)
+     * Executa automaticamente antes da entidade existente receber uma atualização no banco (UPDATE)
      */
     @PreUpdate
     protected void onUpdate() {
         lastTimeChanged = LocalDateTime.now();
     }
 
+    protected void updateLastTimeChanged() {
+        this.lastTimeChanged = LocalDateTime.now();
+    }
 }
