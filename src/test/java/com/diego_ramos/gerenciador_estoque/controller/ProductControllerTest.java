@@ -1,8 +1,8 @@
 package com.diego_ramos.gerenciador_estoque.controller;
 
-import com.diego_ramos.gerenciador_estoque.dto.ProductCreateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.ProductResponseDTO;
-import com.diego_ramos.gerenciador_estoque.dto.ProductUpdateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.ProductDTO.ProductCreateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.ProductDTO.ProductResponseDTO;
+import com.diego_ramos.gerenciador_estoque.dto.ProductDTO.ProductUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
 import com.diego_ramos.gerenciador_estoque.service.ProductService;
 import org.junit.jupiter.api.Test;

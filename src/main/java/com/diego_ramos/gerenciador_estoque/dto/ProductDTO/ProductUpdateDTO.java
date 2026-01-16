@@ -1,4 +1,4 @@
-package com.diego_ramos.gerenciador_estoque.dto;
+package com.diego_ramos.gerenciador_estoque.dto.ProductDTO;
 
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
 
