@@ -1,11 +1,36 @@
 package com.diego_ramos.gerenciador_estoque.utils;
 
+import com.diego_ramos.gerenciador_estoque.enums.UserRole;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 
 public final class Validators {
     public static void checkDTOExists(Object dto) {
         if (dto == null) {
             throw new BusinessException(("DTO ausente"));
+        }
+    }
+
+    public static void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new BusinessException("Nome não deve estar vazio");
+        }
+    }
+
+    public static void validateEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new BusinessException("Email não deve estar vazio");
+        }
+    }
+
+    public static void validatePassword(String passwordHash) {
+        if (passwordHash == null || passwordHash.isBlank()) {
+            throw new BusinessException("Email não deve estar vazio");
+        }
+    }
+
+    public static void validateRole(UserRole role) {
+        if (role == null) {
+            throw new BusinessException("A role é obrigatória");
         }
     }
 }
