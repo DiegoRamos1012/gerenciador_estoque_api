@@ -1,8 +1,8 @@
 package com.diego_ramos.gerenciador_estoque.controller;
 
-import com.diego_ramos.gerenciador_estoque.dto.ProductDTO.ProductCreateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.ProductDTO.ProductResponseDTO;
-import com.diego_ramos.gerenciador_estoque.dto.ProductDTO.ProductUpdateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductCreateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductResponseDTO;
+import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

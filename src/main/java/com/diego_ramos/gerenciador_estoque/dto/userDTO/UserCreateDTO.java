@@ -1,4 +1,4 @@
-package com.diego_ramos.gerenciador_estoque.dto.UserDTO;
+package com.diego_ramos.gerenciador_estoque.dto.userDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
