@@ -5,6 +5,7 @@ import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserCreateDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import com.diego_ramos.gerenciador_estoque.repository.UserRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeName(UserUpdateDTO dto, UUID id) {
+    public void changeName(@NonNull UserUpdateDTO dto, UUID id) {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
@@ -53,5 +54,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void changeEmail(@NonNull UserUpdateDTO dto, UUID id) {
+        User user = userRepository.findById(id).
+                orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
+    }
 
+    
 }

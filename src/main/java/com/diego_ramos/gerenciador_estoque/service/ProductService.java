@@ -6,6 +6,7 @@ import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductResponseDTO;
 import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import com.diego_ramos.gerenciador_estoque.repository.ProductRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class ProductService {
         return ProductResponseDTO.from(product);
     }
 
-    public ProductResponseDTO updateProduct(UUID id, ProductUpdateDTO dto) {
+    public ProductResponseDTO updateProduct(UUID id, @NonNull ProductUpdateDTO dto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Produto não encontrado"));
 
