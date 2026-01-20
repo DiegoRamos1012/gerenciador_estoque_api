@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 
 @Service
 @Transactional
@@ -119,6 +121,41 @@ public class UserService {
         }
 
         user.changeRole(newRole);
+
+        userRepository.save(user);
+    }
+
+    public void deleteUser(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
+
+        if (user.getRole() == UserRole.ADMIN) {
+            long activeAdmins = userRepository.countByRoleAndDeletedFalse(UserRole.ADMIN);
+
+            if (activeAdmins <= 1) {
+                throw new BusinessException("Não é possível remover o último administrador do sistema");
+            }
+        }
+
+        user.softDelete();
+        userRepository.save(user);
+    }
+
+    public void restoreUser(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
+
+        if (!user.isDeleted()) {
+            throw new BusinessException("Usuário já está ativo no sistema");
+        }
+
+        if (userRepository.existsByEmailIgnoreCaseAndDeletedFalse(user.getEmail())) {
+            throw new BusinessException(
+                    "Não é possível restaurar este usuário: email já está em uso"
+            );
+        }
+
+        user.restore();
 
         userRepository.save(user);
     }
