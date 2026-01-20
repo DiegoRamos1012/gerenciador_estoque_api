@@ -45,7 +45,7 @@ public class User extends BaseEntity {
                  UserRole role) {
 
         email = email.toLowerCase();
-        
+
         validateName(name);
         validateEmail(email);
         validatePassword(passwordHash);
@@ -82,7 +82,9 @@ public class User extends BaseEntity {
     }
 
     public void changePassword(String newPasswordHash) {
-        validatePassword(newPasswordHash);
+        if (newPasswordHash == null) {
+            throw new IllegalStateException("Hash de senha inválido");
+        }
         this.passwordHash = newPasswordHash;
     }
 

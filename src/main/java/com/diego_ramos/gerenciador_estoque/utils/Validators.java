@@ -11,19 +11,19 @@ public final class Validators {
     }
 
     public static void validateName(String name) {
-        if (name == null || name.isBlank()) {
+        if (name.isBlank()) {
             throw new BusinessException("Nome não deve estar vazio");
         }
     }
 
     public static void validateEmail(String email) {
-        if (email == null || email.isBlank()) {
+        if (email.isBlank()) {
             throw new BusinessException("Email não deve estar vazio");
         }
     }
 
     public static void validatePassword(String passwordHash) {
-        if (passwordHash == null || passwordHash.isBlank()) {
+        if (passwordHash.isBlank()) {
             throw new BusinessException("Email não deve estar vazio");
         }
     }
