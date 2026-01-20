@@ -27,7 +27,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void userCreate(UserCreateDTO dto) {
+    public void register(UserCreateDTO dto) {
         if (userRepository.existsByNameIgnoreCase(dto.name())) {
             throw new BusinessException("Já existe um usuário com esse nome");
         }
@@ -43,7 +43,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeName(@NonNull UserUpdateDTO dto) {
+    public void changeName(UUID id, @NonNull UserUpdateDTO dto) {
         User user = userRepository.findById(dto.id()).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
@@ -62,7 +62,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeEmail(@NonNull UserUpdateDTO dto) {
+    public void changeEmail(UUID id, @NonNull UserUpdateDTO dto) {
         User user = userRepository.findById(dto.id()).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
@@ -82,7 +82,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changePassword(@NonNull UserUpdateDTO dto) {
+    public void changePassword(UUID id, @NonNull UserUpdateDTO dto) {
         User user = userRepository.findById(dto.id())
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
@@ -99,7 +99,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeRole(@NonNull UserUpdateDTO dto) {
+    public void changeRole(UUID id, @NonNull UserUpdateDTO dto) {
         User user = userRepository.findById(dto.id())
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
