@@ -64,9 +64,9 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /* Factory */
-    public static @NonNull User create(String name,
-                                       String email,
-                                       String passwordHash) {
+    public static @NonNull User register(String name,
+                                         String email,
+                                         String passwordHash) {
 
         return new User(
                 name,
