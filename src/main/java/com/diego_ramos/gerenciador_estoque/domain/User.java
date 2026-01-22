@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,9 +64,9 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /* Factory */
-    public static User create(String name,
-                              String email,
-                              String passwordHash) {
+    public static @NonNull User create(String name,
+                                       String email,
+                                       String passwordHash) {
 
         return new User(
                 name,
@@ -87,9 +88,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public void changePassword(String newPasswordHash) {
-        if (newPasswordHash == null) {
-            throw new IllegalStateException("Hash de senha inválido");
-        }
+        validatePassword(newPasswordHash);
         this.passwordHash = newPasswordHash;
     }
 
@@ -115,7 +114,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
@@ -125,7 +124,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
+    public @NonNull String getUsername() {
         return email;
     }
 
