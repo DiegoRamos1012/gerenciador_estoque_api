@@ -91,6 +91,9 @@ public class UserController {
     // RESTORE
     @PutMapping("/{id}/restore")
     @Operation(summary = "Restaura usuário removido")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Usuário restaurado")
+    })
     public void restoreUser(@PathVariable UUID id) {
         userService.restoreUser(id);
     }
