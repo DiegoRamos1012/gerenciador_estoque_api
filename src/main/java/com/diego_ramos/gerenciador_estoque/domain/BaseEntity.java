@@ -15,15 +15,17 @@ import java.util.UUID;
 @Getter
 @MappedSuperclass
 public abstract class BaseEntity {
-
-    @Column(nullable = false, length = 250)
-    String name;
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)
     private UUID id;
+
+    @Column(nullable = false, length = 250)
+    String name;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
 
     @Column(nullable = false)
     private LocalDateTime lastTimeChanged;
