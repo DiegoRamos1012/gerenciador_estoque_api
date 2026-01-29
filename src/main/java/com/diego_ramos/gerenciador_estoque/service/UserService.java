@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public void changeName(UUID id, @NonNull UserUpdateDTO dto) {
-        User user = userRepository.findById(dto.id()).
+        User user = userRepository.findById(id).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
         if (dto.name() == null) {
@@ -63,7 +63,7 @@ public class UserService {
     }
 
     public void changeEmail(UUID id, @NonNull UserUpdateDTO dto) {
-        User user = userRepository.findById(dto.id()).
+        User user = userRepository.findById(id).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
         if (dto.email() == null) {
@@ -83,7 +83,7 @@ public class UserService {
     }
 
     public void changePassword(UUID id, @NonNull UserUpdateDTO dto) {
-        User user = userRepository.findById(dto.id())
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
         if (dto.password() == null) {
@@ -100,7 +100,7 @@ public class UserService {
     }
 
     public void changeRole(UUID id, @NonNull UserUpdateDTO dto) {
-        User user = userRepository.findById(dto.id())
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
         if (dto.role() == null) {
