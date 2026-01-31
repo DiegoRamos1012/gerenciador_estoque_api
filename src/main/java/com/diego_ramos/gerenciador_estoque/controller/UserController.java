@@ -37,7 +37,7 @@ public class UserController {
     }
 
     // UPDATE NAME
-    @PutMapping("/{id}/name")
+    @PatchMapping("/{id}/name")
     @Operation(summary = "Atualiza nome do usuário")
     public void changeName(
             @PathVariable UUID id,
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     // UPDATE EMAIL
-    @PutMapping("/{id}/email")
+    @PatchMapping("/{id}/email")
     @Operation(summary = "Atualiza e-mail do usuário")
     public void changeEmail(
             @PathVariable UUID id,
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     // UPDATE PASSWORD
-    @PutMapping("/{id}/password")
+    @PatchMapping("/{id}/password")
     @Operation(summary = "Atualiza senha do usuário")
     public void changePassword(
             @PathVariable UUID id,
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     // UPDATE ROLE
-    @PutMapping("/{id}/role")
+    @PatchMapping("/{id}/role")
     @Operation(summary = "Atualiza role do usuário")
     public void changeRole(
             @PathVariable UUID id,
@@ -89,7 +89,7 @@ public class UserController {
     }
 
     // RESTORE
-    @PutMapping("/{id}/restore")
+    @PatchMapping("/{id}/restore")
     @Operation(summary = "Restaura usuário removido")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuário restaurado")

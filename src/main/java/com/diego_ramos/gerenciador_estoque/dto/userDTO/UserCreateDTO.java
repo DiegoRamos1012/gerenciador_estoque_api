@@ -14,7 +14,7 @@ public record UserCreateDTO(
         String email,
 
         @NotBlank(message = "A senha é obrigatória")
-        @Size(min = 8)
+        @Size(min = 8, max = 128)
         String password
 ) {
 }

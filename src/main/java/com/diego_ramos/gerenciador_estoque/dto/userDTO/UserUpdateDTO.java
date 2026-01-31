@@ -18,7 +18,7 @@ public record UserUpdateDTO(
         @Email
         String email,
 
-        @Size(min = 8)
+        @Size(min = 8, max = 128)
         @Pattern(
                 regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).*$",
                 message = "Senha deve conter letra maiúscula, número e caractere especial"
