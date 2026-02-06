@@ -39,6 +39,8 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private UserRole role;
 
+    // Verificar se vale a pena inserir coluna "Status" para gerenciar se o usuário está ativo ou de férias
+
     @Column(nullable = false)
     private boolean deleted = false;
 

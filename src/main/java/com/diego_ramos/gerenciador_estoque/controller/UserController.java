@@ -6,9 +6,11 @@ import com.diego_ramos.gerenciador_estoque.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users")
 @Tag(name = "Users", description = "Operações relacionadas a usuários")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService userService;
@@ -38,6 +41,7 @@ public class UserController {
 
     // UPDATE NAME
     @PatchMapping("/{id}/name")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @Operation(summary = "Atualiza nome do usuário")
     public void changeName(
             @PathVariable UUID id,
@@ -48,6 +52,7 @@ public class UserController {
 
     // UPDATE EMAIL
     @PatchMapping("/{id}/email")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @Operation(summary = "Atualiza e-mail do usuário")
     public void changeEmail(
             @PathVariable UUID id,
@@ -58,6 +63,7 @@ public class UserController {
 
     // UPDATE PASSWORD
     @PatchMapping("/{id}/password")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @Operation(summary = "Atualiza senha do usuário")
     public void changePassword(
             @PathVariable UUID id,
@@ -68,6 +74,7 @@ public class UserController {
 
     // UPDATE ROLE
     @PatchMapping("/{id}/role")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN') ")
     @Operation(summary = "Atualiza role do usuário")
     public void changeRole(
             @PathVariable UUID id,
@@ -78,6 +85,7 @@ public class UserController {
 
     // SOFT DELETE
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Remove usuário (soft delete)")
     @ApiResponses({
@@ -90,6 +98,7 @@ public class UserController {
 
     // RESTORE
     @PatchMapping("/{id}/restore")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restaura usuário removido")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuário restaurado")
