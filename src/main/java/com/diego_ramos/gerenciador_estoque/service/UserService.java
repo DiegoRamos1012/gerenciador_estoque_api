@@ -3,6 +3,7 @@ package com.diego_ramos.gerenciador_estoque.service;
 import com.diego_ramos.gerenciador_estoque.domain.User;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserCreateDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateRoleDTO;
 import com.diego_ramos.gerenciador_estoque.enums.UserRole;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import com.diego_ramos.gerenciador_estoque.repository.UserRepository;
@@ -99,7 +100,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeRole(UUID id, @NonNull UserUpdateDTO dto) {
+    public void changeRole(UUID id, @NonNull UserUpdateRoleDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
