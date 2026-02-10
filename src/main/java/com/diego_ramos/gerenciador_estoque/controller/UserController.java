@@ -106,7 +106,8 @@ public class UserController {
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN') ")
     @Operation(summary = "Atualiza role do usuário")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cargo atualizado com sucesso")
+            @ApiResponse(responseCode = "200", description = "Cargo atualizado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Acesso Negado")
     })
     public ResponseEntity<Map<String, String>> changeRole(
             @PathVariable UUID id,
