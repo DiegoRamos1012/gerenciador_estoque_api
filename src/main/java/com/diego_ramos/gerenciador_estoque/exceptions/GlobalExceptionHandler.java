@@ -1,4 +1,3 @@
-// java
 package com.diego_ramos.gerenciador_estoque.exceptions;
 
 import jakarta.validation.ConstraintViolationException;
@@ -21,15 +20,33 @@ public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    // --- O QUE ESTAVA FALTANDO: Tratamento para sua regra de negócio ---
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusiness(BusinessException ex) {
+        var body = new HashMap<String, Object>();
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Violação de regra de negócio");
+        body.put("message", ex.getMessage()); // Aqui aparecerá "O usuário já possui esse cargo"
+
+        logger.warn("Business rule violation: {}", ex.getMessage());
+        return ResponseEntity.badRequest().body(body);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+        // Correção para evitar erro de duplicidade de chaves ao coletar o Map
         var errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(fe -> fe.getField(), fe -> fe.getDefaultMessage()));
+                .collect(Collectors.toMap(
+                        fe -> fe.getField(),
+                        fe -> fe.getDefaultMessage(),
+                        (existing, replacement) -> existing)); // Mantém o primeiro erro se houver mais de um por campo
+
         var body = new HashMap<String, Object>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("errors", errors);
+
         logger.warn("Validation failed: {}", errors);
         return ResponseEntity.badRequest().body(body);
     }
@@ -38,7 +55,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleDataIntegrity(DataIntegrityViolationException ex) {
         var body = new HashMap<String, Object>();
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("error", "Violação de integridade (possível e-mail duplicado)");
+        body.put("error", "Violação de integridade no banco de dados");
+
         logger.warn("Data integrity violation", ex);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
@@ -47,17 +65,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleBadRequest(RuntimeException ex) {
         var body = new HashMap<String, Object>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", ex.getMessage());
+        body.put("error", "Requisição inválida");
+        body.put("message", ex.getMessage());
+
         logger.warn("Bad request: {}", ex.getMessage());
         return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<String> handleDatabaseException(DataAccessException ex) {
+    public ResponseEntity<Map<String, Object>> handleDatabaseException(DataAccessException ex) {
         logger.error("Database access error", ex);
-        return ResponseEntity
-                .status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("Erro de conexão com o banco de dados");
+        var body = new HashMap<String, Object>();
+        body.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+        body.put("error", "Banco de dados temporariamente indisponível");
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);
     }
 
     @ExceptionHandler(Exception.class)
@@ -66,6 +88,8 @@ public class GlobalExceptionHandler {
         var body = new HashMap<String, Object>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", "Erro interno no servidor");
+        body.put("details", ex.getMessage()); // Útil em desenvolvimento, remover em produção
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 }

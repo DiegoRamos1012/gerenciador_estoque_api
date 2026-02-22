@@ -15,7 +15,7 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        final String securitySchemeName = "basicAuth";
+        final String securitySchemeName = "bearerAuth";
 
         return new OpenAPI()
                 .info(new Info()
@@ -30,8 +30,18 @@ public class OpenApiConfig {
                                 new SecurityScheme()
                                         .name(securitySchemeName)
                                         .type(SecurityScheme.Type.HTTP)
-                                        .scheme("basic")
-                                        .description("Autenticação via E-mail e Senha")));
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .description("Autenticação via token JWT. Faça login em /auth/login para obter o token.")));
+    }
+
+    @Bean
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("Autenticação")
+                .pathsToMatch("/auth/**")
+                .packagesToScan("com.diego_ramos.gerenciador_estoque.controller")
+                .build();
     }
 
     @Bean

@@ -7,6 +7,7 @@ import com.diego_ramos.gerenciador_estoque.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import static com.diego_ramos.gerenciador_estoque.utils.Validators.checkDTOExist
 @RestController
 @RequestMapping("/products")
 @Tag(name = "Products", description = "Operações relacionadas a produtos")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
     private final ProductService productService;
 

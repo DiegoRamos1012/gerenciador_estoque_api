@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users")
 @Tag(name = "Users", description = "Operações relacionadas a usuários")
-@SecurityRequirement(name = "basicAuth")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService userService;
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     // CREATE
-    @PostMapping
+    @PostMapping("/register")
     @Operation(summary = "Registra um novo usuário")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
@@ -125,7 +125,8 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Remove usuário (soft delete)")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Usuário removido com sucesso (No Content)")
+            @ApiResponse(responseCode = "204", description = "Usuário removido com sucesso (No Content)"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
@@ -139,7 +140,8 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restaura usuário removido")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Usuário restaurado com sucesso")
+            @ApiResponse(responseCode = "200", description = "Usuário restaurado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Map<String, String>> restoreUser(@PathVariable UUID id) {
         userService.restoreUser(id);
