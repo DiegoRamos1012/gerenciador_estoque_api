@@ -100,7 +100,7 @@ public class UserController {
     }
 
     // UPDATE ROLE
-    @PatchMapping("/{id}/newRole")
+    @PatchMapping("/{id}/role")
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN') ")
     @Operation(summary = "Atualiza Role do usuário")
     @ApiResponses({
@@ -121,22 +121,22 @@ public class UserController {
     // SOFT DELETE
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Remove usuário (soft delete)")
+    @Operation(summary = "Desativa o usuário selecionado (soft delete)")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Usuário removido com sucesso (No Content)"),
+            @ApiResponse(responseCode = "204", description = "Usuário desativado com sucesso (No Content)"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent()
-                .header("X-Success-Message", "Usuário removido")
+                .header("X-Success-Message", "Usuário desativado")
                 .build();
     }
 
     // RESTORE
     @PatchMapping("/{id}/restore")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Restaura usuário removido")
+    @Operation(summary = "Restaura o usuário desativado selecionado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuário restaurado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")

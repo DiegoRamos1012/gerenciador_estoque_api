@@ -1,43 +1,42 @@
 package com.diego_ramos.gerenciador_estoque.service;
 
 import com.diego_ramos.gerenciador_estoque.config.JwtConfig;
+import com.diego_ramos.gerenciador_estoque.domain.User;
 import com.diego_ramos.gerenciador_estoque.dto.authDTO.AuthResponseDTO;
 import com.diego_ramos.gerenciador_estoque.dto.authDTO.LoginRequestDTO;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.diego_ramos.gerenciador_estoque.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
-    private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtConfig jwtConfig;
 
-    public AuthService(UserDetailsService userDetailsService,
+    public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtConfig jwtConfig) {
-        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtConfig = jwtConfig;
     }
 
     public AuthResponseDTO login(LoginRequestDTO dto) {
-        UserDetails userDetails;
+        User user = userRepository.findByEmailIgnoreCase(dto.email())
+                .orElseThrow(() -> new BusinessException("E-mail ou senha inválidos"));
 
-        try {
-            userDetails = userDetailsService.loadUserByUsername(dto.email());
-        } catch (Exception e) {
+        if (user.isDeleted()) {
+            throw new BusinessException("Não é possível realizar login com um usuário desativado");
+        }
+
+        if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
             throw new BusinessException("E-mail ou senha inválidos");
         }
 
-        if (!passwordEncoder.matches(dto.password(), userDetails.getPassword())) {
-            throw new BusinessException("E-mail ou senha inválidos");
-        }
-
-        String token = jwtConfig.generateToken(userDetails);
+        String token = jwtConfig.generateToken(user);
 
         return new AuthResponseDTO(token, "Bearer");
     }
