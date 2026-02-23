@@ -8,22 +8,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
+/**
+ * Representa um produto no sistema de gerenciamento de estoque.
+ * <p>
+ * Herda campos e comportamento de BaseEntity:
+ * - id
+ * - name
+ * - createdAt
+ * - lastTimeChanged
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    @Column(updatable = false, nullable = false)
-    private UUID id;
-
-    @Column(nullable = false, length = 100)
-    private String name;
+    // =====================
+    // Atributos específicos
+    // =====================
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
@@ -38,9 +41,13 @@ public class Product {
     @Column(nullable = false)
     private ProductStatus status;
 
-    private LocalDateTime lastTimeChanged;
+    // =====================
+    // Construtores
+    // =====================
 
-    // 🔒 Construtor interno
+    /**
+     * Construtor privado para uso interno e factory method.
+     */
     private Product(String name, BigDecimal price, Integer quantity, String description) {
         validateQuantity(quantity);
         this.name = name;
@@ -50,19 +57,37 @@ public class Product {
         this.status = quantity == 0 ? ProductStatus.OUT_OF_STOCK : ProductStatus.ACTIVE;
     }
 
-    // 🏭 Factory
+    // =====================
+    // Factory
+    // =====================
+
+    /**
+     * Cria uma nova instância de Product.
+     *
+     * @param name        Nome do produto
+     * @param price       Preço do produto
+     * @param quantity    Quantidade em estoque
+     * @param description Descrição opcional
+     * @return Produto criado
+     */
     public static Product create(String name, BigDecimal price, Integer quantity, String description) {
         return new Product(name, price, quantity, description);
     }
 
-    // 🔁 Atualização principal
-    public void update(
-            String name,
-            BigDecimal price,
-            Integer quantity,
-            String description,
-            ProductStatus newStatus
-    ) {
+    // =====================
+    // Métodos de negócio
+    // =====================
+
+    /**
+     * Atualiza os principais atributos do produto.
+     *
+     * @param name        Novo nome
+     * @param price       Novo preço
+     * @param quantity    Nova quantidade
+     * @param description Nova descrição
+     * @param newStatus   Novo status, pode ser null
+     */
+    public void update(String name, BigDecimal price, Integer quantity, String description, ProductStatus newStatus) {
         validateQuantity(quantity);
 
         this.name = name;
@@ -79,6 +104,11 @@ public class Product {
         updateLastTimeChanged();
     }
 
+    /**
+     * Altera o status do produto seguindo regras de negócio.
+     *
+     * @param newStatus Novo status
+     */
     public void changeStatus(ProductStatus newStatus) {
         if (newStatus == null) return;
 
@@ -90,22 +120,33 @@ public class Product {
         updateLastTimeChanged();
     }
 
+    // =====================
+    // Validações e utilitários internos
+    // =====================
+
+    /**
+     * Valida se a quantidade é válida (não negativa).
+     *
+     * @param quantity Quantidade a validar
+     */
     private void validateQuantity(Integer quantity) {
         if (quantity < 0) {
             throw new BusinessException("Quantidade não pode ser negativa");
         }
     }
 
-    private void updateLastTimeChanged() {
-        this.lastTimeChanged = LocalDateTime.now();
+    @Override
+    protected void updateLastTimeChanged() {
+        super.updateLastTimeChanged();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Product product)) return false;
-        return id != null && id.equals(product.id);
-    }
+    /**
+     * Atualiza o campo lastTimeChanged para o horário atual.
+     */
+
+    // =====================
+    // Overrides
+    // =====================
 
     @Override
     public int hashCode() {

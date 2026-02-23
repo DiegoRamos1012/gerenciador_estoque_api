@@ -1,11 +1,12 @@
 package com.diego_ramos.gerenciador_estoque.service;
 
 import com.diego_ramos.gerenciador_estoque.domain.Product;
-import com.diego_ramos.gerenciador_estoque.dto.ProductCreateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.ProductResponseDTO;
-import com.diego_ramos.gerenciador_estoque.dto.ProductUpdateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductCreateDTO;
+import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductResponseDTO;
+import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import com.diego_ramos.gerenciador_estoque.repository.ProductRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,24 +50,24 @@ public class ProductService {
         return ProductResponseDTO.from(product);
     }
 
-    public ProductResponseDTO updateProduct(UUID id, ProductUpdateDTO dto) {
+    public ProductResponseDTO updateProduct(UUID id, @NonNull ProductUpdateDTO dto) {
         Product product = productRepository.findById(id)
-            .orElseThrow(() -> new BusinessException("Produto não encontrado"));
+                .orElseThrow(() -> new BusinessException("Produto não encontrado"));
 
         product.update(
-            dto.newName() != null ? dto.newName() : product.getName(),
-            dto.newPrice() != null ? dto.newPrice() : product.getPrice(),
-            dto.newQuantity() != null ? dto.newQuantity() : product.getQuantity(),
-            dto.newDescription() != null ? dto.newDescription() : product.getDescription(),
-            dto.newStatus()
-    );
+                dto.newName() != null ? dto.newName() : product.getName(),
+                dto.newPrice() != null ? dto.newPrice() : product.getPrice(),
+                dto.newQuantity() != null ? dto.newQuantity() : product.getQuantity(),
+                dto.newDescription() != null ? dto.newDescription() : product.getDescription(),
+                dto.newStatus()
+        );
 
-    productRepository.save(product);
-    return ProductResponseDTO.from(product);
-}
+        productRepository.save(product);
+        return ProductResponseDTO.from(product);
+    }
 
 
-        // return ProductResponseDTO.from(product);
+    // return ProductResponseDTO.from(product);
     public void deleteProduct(UUID id) {
         if (!productRepository.existsById(id)) {
             throw new BusinessException("Produto não encontrado");
