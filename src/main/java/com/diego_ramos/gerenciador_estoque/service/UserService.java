@@ -1,10 +1,7 @@
 package com.diego_ramos.gerenciador_estoque.service;
 
 import com.diego_ramos.gerenciador_estoque.domain.User;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserChangePasswordDTO;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserCreateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateRoleDTO;
+import com.diego_ramos.gerenciador_estoque.dto.userDTO.*;
 import com.diego_ramos.gerenciador_estoque.enums.UserRole;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import com.diego_ramos.gerenciador_estoque.repository.UserRepository;
@@ -45,15 +42,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeName(UUID id, @NonNull UserUpdateDTO dto) {
+    public void changeName(UUID id, @NonNull UserChangeNameDTO dto) {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
-        if (dto.name() == null) {
+        if (dto.newName() == null) {
             throw new BusinessException(("Nome não informado pra alteração"));
         }
 
-        String newName = dto.name();
+        String newName = dto.newName();
 
         if (userRepository.existsByNameIgnoreCase(newName) &&
                 !user.getName().equalsIgnoreCase(newName)) {
@@ -64,15 +61,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeEmail(UUID id, @NonNull UserUpdateDTO dto) {
+    public void changeEmail(UUID id, @NonNull UserChangeEmailDTO dto) {
         User user = userRepository.findById(id).
                 orElseThrow(() -> new BusinessException(("Usuário não encontrado")));
 
-        if (dto.email() == null) {
+        if (dto.newEmail() == null) {
             throw new BusinessException(("Email não informado pra alteração"));
         }
 
-        String newEmail = dto.email();
+        String newEmail = dto.newEmail();
 
         if (!user.getEmail().equalsIgnoreCase(newEmail)
                 && userRepository.existsByEmailIgnoreCase(newEmail)) {
@@ -105,11 +102,11 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
-        if (dto.role() == null) {
+        if (dto.newRole() == null) {
             throw new BusinessException("Cargo não informado para alteração");
         }
 
-        UserRole newRole = dto.role();
+        UserRole newRole = dto.newRole();
         UserRole currentRole = user.getRole();
 
         // evita operação inútil

@@ -1,9 +1,6 @@
 package com.diego_ramos.gerenciador_estoque.controller;
 
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserChangePasswordDTO;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserCreateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateDTO;
-import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateRoleDTO;
+import com.diego_ramos.gerenciador_estoque.dto.userDTO.*;
 import com.diego_ramos.gerenciador_estoque.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,7 +54,7 @@ public class UserController {
     })
     public ResponseEntity<Map<String, String>> changeName(
             @PathVariable UUID id,
-            @RequestBody @Valid UserUpdateDTO dto) {
+            @RequestBody @Valid UserChangeNameDTO dto) {
 
         userService.changeName(id, dto);
         String msg = "Nome atualizado com sucesso!";
@@ -75,7 +72,7 @@ public class UserController {
     })
     public ResponseEntity<Map<String, String>> changeEmail(
             @PathVariable UUID id,
-            @RequestBody @Valid UserUpdateDTO dto) {
+            @RequestBody @Valid UserChangeEmailDTO dto) {
 
         userService.changeEmail(id, dto);
         String msg = "E-mail atualizado com sucesso!";
@@ -103,9 +100,9 @@ public class UserController {
     }
 
     // UPDATE ROLE
-    @PatchMapping("/{id}/role")
+    @PatchMapping("/{id}/newRole")
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN') ")
-    @Operation(summary = "Atualiza role do usuário")
+    @Operation(summary = "Atualiza Role do usuário")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Cargo atualizado com sucesso"),
             @ApiResponse(responseCode = "401", description = "Acesso Negado")

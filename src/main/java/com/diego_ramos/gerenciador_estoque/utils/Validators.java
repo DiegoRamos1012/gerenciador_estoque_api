@@ -30,7 +30,7 @@ public final class Validators {
 
     public static void validateRole(UserRole role) {
         if (role == null) {
-            throw new BusinessException("A role é obrigatória");
+            throw new BusinessException("A newRole é obrigatória");
         }
     }
 }
