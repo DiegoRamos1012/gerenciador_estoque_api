@@ -21,7 +21,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Gerenciador de Estoque API")
                         .version("v1")
-                        .description("Documentação da API para gerenciamento de estoque")
+                        .description("Documentação da API para gerenciamento de estoque.")
                         .contact(new Contact().name("Diego Ramos"))
                 )
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
@@ -32,7 +32,7 @@ public class OpenApiConfig {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
-                                        .description("Autenticação via token JWT. Faça login em /auth/login para obter o token.")));
+                                        .description("Autenticação via token JWT. Faça login em /auth/login para obter o token e cole aqui.")));
     }
 
     @Bean

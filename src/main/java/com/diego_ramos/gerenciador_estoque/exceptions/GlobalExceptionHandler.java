@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
         var body = new HashMap<String, Object>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", "Erro interno no servidor");
-        body.put("details", ex.getMessage()); // Útil em desenvolvimento, remover em produção
+        body.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }

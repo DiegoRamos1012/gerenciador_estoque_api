@@ -1,6 +1,7 @@
 package com.diego_ramos.gerenciador_estoque.service;
 
 import com.diego_ramos.gerenciador_estoque.domain.User;
+import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserChangePasswordDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserCreateDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateRoleDTO;
@@ -83,15 +84,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changePassword(UUID id, @NonNull UserUpdateDTO dto) {
+    public void changePassword(UUID id, @NonNull UserChangePasswordDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
 
-        if (dto.password() == null) {
+        if (dto.newPassword() == null) {
             throw new BusinessException("Senha não informada para alteração");
         }
 
-        String rawPassword = dto.password();
+        String rawPassword = dto.newPassword();
 
         String newPasswordHash = passwordEncoder.encode(rawPassword);
 

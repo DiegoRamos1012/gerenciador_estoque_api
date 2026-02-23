@@ -1,5 +1,6 @@
 package com.diego_ramos.gerenciador_estoque.controller;
 
+import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserChangePasswordDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserCreateDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserUpdateRoleDTO;
@@ -92,7 +93,7 @@ public class UserController {
     })
     public ResponseEntity<Map<String, String>> changePassword(
             @PathVariable UUID id,
-            @RequestBody @Valid UserUpdateDTO dto) {
+            @RequestBody @Valid UserChangePasswordDTO dto) {
 
         userService.changePassword(id, dto);
         String msg = "Senha alterada com sucesso!";
