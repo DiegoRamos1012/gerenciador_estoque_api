@@ -28,6 +28,9 @@ public class Product extends BaseEntity {
     // Atributos específicos
     // =====================
 
+    @Column(nullable = false, unique = true, length = 100)
+    private String productCode;
+    
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
@@ -147,7 +150,6 @@ public class Product extends BaseEntity {
     // =====================
     // Overrides
     // =====================
-
     @Override
     public int hashCode() {
         return getClass().hashCode();
