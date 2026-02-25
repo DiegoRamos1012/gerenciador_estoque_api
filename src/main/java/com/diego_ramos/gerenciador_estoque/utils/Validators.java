@@ -7,12 +7,6 @@ public final class Validators {
     private Validators() {
     }
 
-    public static void checkDTOExists(Object dto) {
-        if (dto == null) {
-            throw new BusinessException(("DTO ausente"));
-        }
-    }
-
     public static void validateUserName(String name) {
         if (name.isBlank()) {
             throw new BusinessException("Nome não deve estar vazio");
@@ -27,7 +21,7 @@ public final class Validators {
 
     public static void validatePassword(String passwordHash) {
         if (passwordHash.isBlank()) {
-            throw new BusinessException("Email não deve estar vazio");
+            throw new BusinessException("Senha não deve estar vazia");
         }
     }
 

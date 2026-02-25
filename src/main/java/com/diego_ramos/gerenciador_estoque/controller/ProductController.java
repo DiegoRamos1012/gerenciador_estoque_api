@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static com.diego_ramos.gerenciador_estoque.utils.Validators.checkDTOExists;
-
 @RestController
 @RequestMapping("/products")
 @Tag(name = "Products", description = "Operações relacionadas a produtos")
@@ -37,7 +35,6 @@ public class ProductController {
             @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public void create(@RequestBody @Valid ProductCreateDTO dto) {
-        checkDTOExists(dto);
         productService.createProduct(dto);
     }
 
@@ -60,7 +57,6 @@ public class ProductController {
     @PatchMapping("/{id}")
     @Operation(summary = "Atualiza produto por ID")
     public ProductResponseDTO updateProduct(@PathVariable UUID id, @RequestBody @Valid ProductUpdateDTO dto) {
-        checkDTOExists(dto);
         return productService.updateProduct(id, dto);
     }
 
