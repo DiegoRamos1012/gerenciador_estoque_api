@@ -4,6 +4,9 @@ import com.diego_ramos.gerenciador_estoque.enums.UserRole;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 
 public final class Validators {
+    private Validators() {
+    }
+
     public static void checkDTOExists(Object dto) {
         if (dto == null) {
             throw new BusinessException(("DTO ausente"));

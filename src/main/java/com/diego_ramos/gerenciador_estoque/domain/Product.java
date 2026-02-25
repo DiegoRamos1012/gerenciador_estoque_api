@@ -24,13 +24,9 @@ import java.math.BigDecimal;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-    // =====================
-    // Atributos específicos
-    // =====================
-
     @Column(nullable = false, unique = true, length = 100)
     private String productCode;
-    
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
@@ -90,10 +86,11 @@ public class Product extends BaseEntity {
      * @param description Nova descrição
      * @param newStatus   Novo status, pode ser null
      */
-    public void update(String name, BigDecimal price, Integer quantity, String description, ProductStatus newStatus) {
+    public void update(String name, String productCode, BigDecimal price, Integer quantity, String description, ProductStatus newStatus) {
         validateQuantity(quantity);
 
         this.name = name;
+        this.productCode = productCode;
         this.price = price;
         this.quantity = quantity;
         this.description = description;

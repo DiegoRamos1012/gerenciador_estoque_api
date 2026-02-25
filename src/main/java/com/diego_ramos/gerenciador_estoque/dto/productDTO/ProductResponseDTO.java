@@ -13,6 +13,8 @@ public record ProductResponseDTO(
 
         String name,
 
+        String productCode,
+
         BigDecimal price,
 
         Integer quantity,
@@ -29,6 +31,7 @@ public record ProductResponseDTO(
         return new ProductResponseDTO(
                 product.getId(),
                 product.getName(),
+                product.getProductCode(),
                 product.getPrice(),
                 product.getQuantity(),
                 product.getDescription(),

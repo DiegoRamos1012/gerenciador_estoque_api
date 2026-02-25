@@ -1,6 +1,7 @@
 package com.diego_ramos.gerenciador_estoque.dto.productDTO;
 
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
+import com.diego_ramos.gerenciador_estoque.utils.Normalizations;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -14,6 +15,9 @@ public record ProductCreateDTO(
         String name,
 
         @NotNull
+        String productCode,
+
+        @NotNull
         @Positive
         BigDecimal price,
 
@@ -24,4 +28,7 @@ public record ProductCreateDTO(
 
         ProductStatus status
 ) {
+    public ProductCreateDTO {
+        productCode = Normalizations.trim(productCode());
+    }
 }
