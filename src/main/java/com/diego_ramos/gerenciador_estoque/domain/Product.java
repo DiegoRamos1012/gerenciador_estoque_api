@@ -3,9 +3,11 @@ package com.diego_ramos.gerenciador_estoque.domain;
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import java.math.BigDecimal;
 
@@ -20,8 +22,9 @@ import java.math.BigDecimal;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE product SET deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 public class Product extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 100)
@@ -47,9 +50,10 @@ public class Product extends BaseEntity {
     /**
      * Construtor privado para uso interno e factory method.
      */
-    private Product(String name, BigDecimal price, Integer quantity, String description) {
+    private Product(String name, String productCode, BigDecimal price, Integer quantity, String description) {
         validateQuantity(quantity);
         this.name = name;
+        this.productCode = productCode;
         this.price = price;
         this.quantity = quantity;
         this.description = description;
@@ -64,13 +68,14 @@ public class Product extends BaseEntity {
      * Cria uma nova instância de Product.
      *
      * @param name        Nome do produto
+     * @param productCode Código do produto
      * @param price       Preço do produto
      * @param quantity    Quantidade em estoque
      * @param description Descrição opcional
      * @return Produto criado
      */
-    public static Product create(String name, BigDecimal price, Integer quantity, String description) {
-        return new Product(name, price, quantity, description);
+    public static Product create(@NotNull String name, @NotNull String productCode, BigDecimal price, Integer quantity, String description) {
+        return new Product(name, productCode, price, quantity, description);
     }
 
     // =====================
@@ -81,10 +86,12 @@ public class Product extends BaseEntity {
      * Atualiza os principais atributos do produto.
      *
      * @param name        Novo nome
+     * @param productCode Novo código de produto
      * @param price       Novo preço
      * @param quantity    Nova quantidade
      * @param description Nova descrição
      * @param newStatus   Novo status, pode ser null
+     * @
      */
     public void update(String name, String productCode, BigDecimal price, Integer quantity, String description, ProductStatus newStatus) {
         validateQuantity(quantity);

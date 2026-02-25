@@ -10,6 +10,6 @@ import java.math.BigDecimal;
  */
 public class ProductFactoryTest {
     public static Product createFakeProduct() {
-        return Product.create("Produto Teste", BigDecimal.valueOf(220.00), 20, "Produto para testes");
+        return Product.create("Produto Teste", "ABC - 1234", BigDecimal.valueOf(220.00), 20, "Produto para testes");
     }
 }

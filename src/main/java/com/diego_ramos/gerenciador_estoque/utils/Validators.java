@@ -13,7 +13,7 @@ public final class Validators {
         }
     }
 
-    public static void validateName(String name) {
+    public static void validateUserName(String name) {
         if (name.isBlank()) {
             throw new BusinessException("Nome não deve estar vazio");
         }
@@ -34,6 +34,20 @@ public final class Validators {
     public static void validateRole(UserRole role) {
         if (role == null) {
             throw new BusinessException("A newRole é obrigatória");
+        }
+    }
+
+    // Validações para Product
+
+    public static void validateProductName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new BusinessException("Não é possível registrar um produto com nome vazio");
+        }
+    }
+
+    public static void validateProductCode(String productCode) {
+        if (productCode == null || productCode.isBlank()) {
+            throw new BusinessException("Não é possível registrar um produto com código vazio");
         }
     }
 }

@@ -26,8 +26,21 @@ public class ProductService {
             throw new BusinessException("Já existe um produto com este nome");
         }
 
+        if (dto.name() == null || dto.name().isBlank()) {
+            throw new BusinessException("Não é possível salvar um produto com nome vazio");
+        }
+
+        if (productRepository.existsByProductCodeIgnoreCase(dto.productCode())) {
+            throw new BusinessException("Já existe um produto com este código");
+        }
+
+        if (dto.productCode() == null || dto.productCode().isBlank()) {
+            throw new BusinessException("Não é possível salvar um produto com código vazio");
+        }
+
         Product product = Product.create(
                 dto.name(),
+                dto.productCode(),
                 dto.price(),
                 dto.quantity(),
                 dto.description()
@@ -56,10 +69,11 @@ public class ProductService {
 
         product.update(
                 dto.newName() != null ? dto.newName() : product.getName(),
+                dto.newProductCode() != null ? dto.newProductCode() : product.getProductCode(),
                 dto.newPrice() != null ? dto.newPrice() : product.getPrice(),
                 dto.newQuantity() != null ? dto.newQuantity() : product.getQuantity(),
                 dto.newDescription() != null ? dto.newDescription() : product.getDescription(),
-                dto.newStatus()
+                dto.newStatus() != null ? dto.newStatus() : product.getStatus()
         );
 
         productRepository.save(product);
