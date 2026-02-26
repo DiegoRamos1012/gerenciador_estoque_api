@@ -4,13 +4,10 @@ import com.diego_ramos.gerenciador_estoque.enums.UserRole;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 
 public final class Validators {
-    public static void checkDTOExists(Object dto) {
-        if (dto == null) {
-            throw new BusinessException(("DTO ausente"));
-        }
+    private Validators() {
     }
 
-    public static void validateName(String name) {
+    public static void validateUserName(String name) {
         if (name.isBlank()) {
             throw new BusinessException("Nome não deve estar vazio");
         }
@@ -24,13 +21,27 @@ public final class Validators {
 
     public static void validatePassword(String passwordHash) {
         if (passwordHash.isBlank()) {
-            throw new BusinessException("Email não deve estar vazio");
+            throw new BusinessException("Senha não deve estar vazia");
         }
     }
 
     public static void validateRole(UserRole role) {
         if (role == null) {
             throw new BusinessException("A newRole é obrigatória");
+        }
+    }
+
+    // Validações para Product
+
+    public static void validateProductName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new BusinessException("Não é possível registrar um produto com nome vazio");
+        }
+    }
+
+    public static void validateProductCode(String productCode) {
+        if (productCode == null || productCode.isBlank()) {
+            throw new BusinessException("Não é possível registrar um produto com código vazio");
         }
     }
 }

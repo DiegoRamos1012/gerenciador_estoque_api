@@ -37,7 +37,7 @@ public class UserService {
 
         String passwordHash = passwordEncoder.encode(dto.password());
 
-        User user = User.register(dto.name(), dto.email(), passwordHash);
+        User user = User.create(dto.name(), dto.email(), passwordHash);
 
         userRepository.save(user);
     }

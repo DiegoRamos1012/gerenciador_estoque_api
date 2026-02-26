@@ -20,6 +20,16 @@ import java.util.List;
 
 import static com.diego_ramos.gerenciador_estoque.utils.Validators.*;
 
+/**
+ * Representa um usuário do sistema.
+ * <p>
+ * Herda campos e comportamento de BaseEntity:
+ * - id
+ * - name
+ * - createdAt
+ * - lastTimeChanged
+ */
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE users SET deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
@@ -55,7 +65,7 @@ public class User extends BaseEntity implements UserDetails {
 
         email = email.toLowerCase();
 
-        validateName(name);
+        validateUserName(name);
         validateEmail(email);
         validatePassword(passwordHash);
         validateRole(role);
@@ -66,10 +76,10 @@ public class User extends BaseEntity implements UserDetails {
         this.role = role;
     }
 
-    /* Factory */
-    public static @NonNull User register(String name,
-                                         String email,
-                                         String passwordHash) {
+    /* Factory (alinhada com Product.create) */
+    public static @NonNull User create(String name,
+                                       String email,
+                                       String passwordHash) {
 
         return new User(
                 name,
@@ -79,27 +89,58 @@ public class User extends BaseEntity implements UserDetails {
         );
     }
 
+    /**
+     * Atualiza os principais atributos do usuário.
+     *
+     * @param name         Novo nome
+     * @param email        Novo email
+     * @param passwordHash Novo passwordHash
+     * @param newRole      Novo papel (pode ser null para não alterar)
+     */
+    public void update(String name, String email, String passwordHash, UserRole newRole) {
+        String normalizedEmail = email.toLowerCase();
+
+        validateUserName(name);
+        validateEmail(normalizedEmail);
+        validatePassword(passwordHash);
+
+        this.name = name;
+        this.email = normalizedEmail;
+        this.passwordHash = passwordHash;
+
+        if (newRole != null) {
+            changeRole(newRole);
+        }
+
+        updateLastTimeChanged();
+    }
+
     public void changeName(String newName) {
-        validateName(newName);
+        validateUserName(newName);
         this.name = newName;
+        updateLastTimeChanged();
     }
 
     public void changeEmail(String newEmail) {
         newEmail = newEmail.toLowerCase();
         validateEmail(newEmail);
         this.email = newEmail;
+        updateLastTimeChanged();
     }
 
     public void changePassword(String newPasswordHash) {
         validatePassword(newPasswordHash);
         this.passwordHash = newPasswordHash;
+        updateLastTimeChanged();
     }
 
     public void changeRole(UserRole newRole) {
         validateRole(newRole);
         this.role = newRole;
+        updateLastTimeChanged();
     }
 
+    // Presume-se que BaseEntity contenha os campos deleted e deletedAt (como em Product)
     public void softDelete() {
         if (this.deleted) {
             return;
@@ -133,10 +174,34 @@ public class User extends BaseEntity implements UserDetails {
         return email;
     }
 
-    /* Campos herdados de BaseEntity:
-     * - id
-     * - name
-     * - createdAt
-     * - lastTimeChanged
-     */
+    // Implementações padrão do UserDetails
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !this.deleted;
+    }
+
+    @Override
+    protected void updateLastTimeChanged() {
+        super.updateLastTimeChanged();
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

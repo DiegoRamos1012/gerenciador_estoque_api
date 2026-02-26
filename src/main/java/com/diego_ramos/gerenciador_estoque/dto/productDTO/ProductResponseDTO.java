@@ -2,7 +2,6 @@ package com.diego_ramos.gerenciador_estoque.dto.productDTO;
 
 import com.diego_ramos.gerenciador_estoque.domain.Product;
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +12,8 @@ public record ProductResponseDTO(
 
         String name,
 
+        String productCode,
+
         BigDecimal price,
 
         Integer quantity,
@@ -21,7 +22,6 @@ public record ProductResponseDTO(
 
         ProductStatus status,
 
-        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         LocalDateTime lastTimeChanged
 ) {
     public static ProductResponseDTO from(Product product) {
@@ -29,6 +29,7 @@ public record ProductResponseDTO(
         return new ProductResponseDTO(
                 product.getId(),
                 product.getName(),
+                product.getProductCode(),
                 product.getPrice(),
                 product.getQuantity(),
                 product.getDescription(),
