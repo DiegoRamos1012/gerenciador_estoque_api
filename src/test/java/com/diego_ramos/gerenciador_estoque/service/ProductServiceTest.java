@@ -44,6 +44,7 @@ public class ProductServiceTest {
 
         ProductCreateDTO fakeDto = new ProductCreateDTO(
                 fakeProduct.getName(),
+                fakeProduct.getProductCode(),
                 fakeProduct.getPrice(),
                 fakeProduct.getQuantity(),
                 fakeProduct.getDescription(),
@@ -81,11 +82,12 @@ public class ProductServiceTest {
         when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         ProductUpdateDTO dto = new ProductUpdateDTO(
-                "Produto Atualizado",           // name
-                BigDecimal.valueOf(250.00),    // price
-                30,                             // quantity
-                "Produto atualizado para teste",// description
-                ProductStatus.ACTIVE            // status
+                "Produto Atualizado",
+                "DEF-1234",
+                BigDecimal.valueOf(250.00),
+                30,
+                "Produto atualizado para teste",
+                ProductStatus.ACTIVE
         );
 
         ProductResponseDTO updatedProduct = assertDoesNotThrow(() -> productService.updateProduct(fakeId, dto));
@@ -121,6 +123,7 @@ public class ProductServiceTest {
 
         ProductCreateDTO fakeDto = new ProductCreateDTO(
                 fakeProduct.getName(),
+                fakeProduct.getProductCode(),
                 fakeProduct.getPrice(),
                 fakeProduct.getQuantity(),
                 fakeProduct.getDescription(),
@@ -157,6 +160,7 @@ public class ProductServiceTest {
         when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         ProductUpdateDTO dto = new ProductUpdateDTO(
+                null,
                 null,
                 null,
                 null,

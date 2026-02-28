@@ -5,13 +5,13 @@ import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductResponseDTO;
 import com.diego_ramos.gerenciador_estoque.dto.productDTO.ProductUpdateDTO;
 import com.diego_ramos.gerenciador_estoque.enums.ProductStatus;
 import com.diego_ramos.gerenciador_estoque.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -39,6 +39,7 @@ public class ProductControllerTest {
     void shouldCreateProduct() throws Exception {
         ProductCreateDTO dto = new ProductCreateDTO(
                 "Produto teste",
+                "ABC-1234",
                 BigDecimal.valueOf(250.00),
                 30,
                 "Produto teste",
@@ -61,6 +62,7 @@ public class ProductControllerTest {
 
         ProductUpdateDTO dto = new ProductUpdateDTO(
                 "Produto Teste",
+                "DEF-5678",
                 BigDecimal.valueOf(300.32),
                 50,
                 "Produto para testes",
