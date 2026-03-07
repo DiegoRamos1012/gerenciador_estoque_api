@@ -4,6 +4,7 @@ import com.diego_ramos.gerenciador_estoque.config.JwtConfig;
 import com.diego_ramos.gerenciador_estoque.domain.User;
 import com.diego_ramos.gerenciador_estoque.dto.authDTO.AuthResponseDTO;
 import com.diego_ramos.gerenciador_estoque.dto.authDTO.LoginRequestDTO;
+import com.diego_ramos.gerenciador_estoque.dto.userDTO.UserResponseDTO;
 import com.diego_ramos.gerenciador_estoque.exceptions.BusinessException;
 import com.diego_ramos.gerenciador_estoque.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +39,7 @@ public class AuthService {
 
         String token = jwtConfig.generateToken(user);
 
-        return new AuthResponseDTO(token, "Bearer");
+        return new AuthResponseDTO(token, "Bearer", UserResponseDTO.from(user));
     }
 }
 
