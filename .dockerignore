@@ -1,6 +1,7 @@
-target
-.git
+target/
+.git/
 .gitignore
-node_modules
-Dockerfile
-docker-compose.yml
+node_modules/
+data/
+*.log
+.env

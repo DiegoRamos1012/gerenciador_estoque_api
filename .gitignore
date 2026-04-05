@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 /data/database.db
 /data/testdb.mv.db
+.env
 
 ### STS ###
 .apt_generated
